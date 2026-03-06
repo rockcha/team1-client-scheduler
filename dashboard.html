@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Admin Dashboard</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+</head>
+
+<body>
+<section>
+    <div class="sidebar">
+        <div class="menu-name">
+            <h3>Menu</h3>
+        </div>
+        <div class="menu">
+        <div class="dashboard active">Dashboard</div>
+        <div><a href="#">캘린더 보기</a></div>
+        <div>예약 관리</div>
+        <div>통계 로그</div>
+        <div>⚙ 설정</div>
+        </div>
+        
+        </div>
+</section>
+
+<header>
+    <h2>상담 일정 관리 시스템</h2>
+    <div id="mode"></div>
+</header>
+<section class="main">
+
+ 
+      
+    <!-- 오늘 예약 건수 -->
+    <section class="system"> 
+        <div class="card">
+          <h3>오늘 예약 </h3>
+          <div id="today-reservation">0</div>
+        </div>
+      <!-- 이번달 예약 총 건수 -->
+        <div class="card">
+          <h3>이번달 예약</h3>
+          <div id="monthCount">0</div>
+        </div>
+    <!-- 최근 예약  건수 -->
+           <div class="card">
+            <h3>최근 예약</h3>
+            <div id="recentCount">0</div>
+          </div>
+    
+  
+          
+      </section>
+</section>
+<section class="chart-section">
+
+    <div class="chart-card">
+    <h3>이번달 예약 통계</h3>
+    <canvas id="reservationChart"></canvas>
+    </div>
+
+    </section>
+    <script>
+
+
+        </script>
+
+</body>
+</html>
