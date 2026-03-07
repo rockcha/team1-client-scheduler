@@ -1,3 +1,5 @@
+import { getReservations } from "./storage.js";
+
 const $year = document.querySelector("#year");
 const $month = document.querySelector("#month");
 const $prev = document.querySelector("#prev");
@@ -8,12 +10,13 @@ const API_URL =
   "https://calendarific.com/api/v2/holidays?api_key=EZ9RGnS3FTpTkh9tMsd5qRMRW2QWvv82";
 const COUNTRY = "kr";
 
-// 상태관리 객체
 let state = {
   year: new Date().getFullYear(),
   month: new Date().getMonth(),
   holidays: [],
 };
+
+// 공휴일 가져오기
 async function getHolidays(year) {
   try {
     const response = await fetch(`${API_URL}&country=${COUNTRY}&year=${year}`);
@@ -25,51 +28,44 @@ async function getHolidays(year) {
   }
 }
 
+// 달력 헤더 렌더
 function renderCalendarHeader(year, month) {
   $year.innerHTML = `${year}년`;
   $month.innerHTML = `${month + 1}월 상담일정`;
 }
 
+// 달력 렌더
 async function renderCalendar(year, month) {
   renderCalendarHeader(year, month);
 
   state.holidays = await getHolidays(year);
 
-  const firstDay = new Date(year, month, 1).getDay(); // 이번달 한국시각 첫째일자
-  const lastDate = new Date(year, month + 1, 0).getDate(); // 이번달 마지막 일자
-  const weekday = [
-    "일요일",
-    "월요일",
-    "화요일",
-    "수요일",
-    "목요일",
-    "금요일",
-    "토요일",
-  ];
+  const reservations = getReservations();
+
+  const firstDay = new Date(year, month, 1).getDay();
+  const lastDate = new Date(year, month + 1, 0).getDate();
+  const weekday = ["일", "월", "화", "수", "목", "금", "토"];
 
   let html = "";
-  // 요일 출력
+
+  // 요일
   for (let i = 0; i < weekday.length; i++) {
-    if (i === 0) {
-      html += `<div class="date weekday sunday">${weekday[i]}</div>`;
-    } else if (i === 6) {
-      html += `<div class="date weekday saturday">${weekday[i]}</div>`;
-    } else {
-      html += `<div class="date weekday">${weekday[i]}</div>`;
-    }
+    html += `<div class="date weekday">${weekday[i]}</div>`;
   }
-  // 빈 일자 출력
+
+  // 빈칸
   for (let i = 0; i < firstDay; i++) {
     html += `<div class="date empty"></div>`;
   }
-  // 일자 출력
+
+  // 날짜
   for (let day = 1; day <= lastDate; day++) {
     const dayIndex = (firstDay + day - 1) % 7;
 
     const paddedMonth = String(month + 1).padStart(2, "0");
     const paddedDay = String(day).padStart(2, "0");
     const fullDate = `${year}-${paddedMonth}-${paddedDay}`;
-    console.log(fullDate);
+
     const isSunday = dayIndex === 0;
     const isSaturday = dayIndex === 6;
     const isHoliday = state.holidays.includes(fullDate);
@@ -82,13 +78,24 @@ async function renderCalendar(year, month) {
     if (isHoliday) className += " holiday";
     if (isBlocked) className += " blocked";
 
+    // 예약 리스트
+    const dayReservations = reservations.filter((r) => r.date === fullDate);
+    let reservationHTML = "";
+    dayReservations.forEach((r) => {
+      reservationHTML += `<div class="reservation-item">${r.time} ${r.name}</div>`;
+    });
+
     html += `
       <div 
         class="${className}" 
         data-day="${fullDate}" 
         ${isBlocked ? "data-blocked='true'" : ""}
+        ${dayReservations.length ? `data-reservation-count="${dayReservations.length}"` : ""}
       >
-        ${day}
+        <div class="day-number">${day}</div>
+        <div class="reservation-list">
+          ${reservationHTML}
+        </div>
       </div>
     `;
   }
@@ -96,24 +103,21 @@ async function renderCalendar(year, month) {
   $calendar.innerHTML = html;
 }
 
+// 날짜 클릭
 $calendar.addEventListener("click", (e) => {
-  const target = e.target;
+  const target = e.target.closest(".day");
+  if (!target) return;
 
-  if (!target.classList.contains("day")) return;
   if (target.dataset.blocked === "true") {
     alert("예약 불가능한 날짜입니다.");
     return;
   }
 
   const selectedDate = target.dataset.day;
-
-  // reserve 페이지로 이동
-  location.href = `reserve.html?date=${selectedDate}`;
-  // joy님이 이 클릭 날짜를 받아야해요.
-  // 이걸 스케쥴(이름은 하고싶은거) 객체로 동적으로 받아서.. 로컬스토리지에 예약될 때나... 수정할 때.. 삭제할 때로 로컬스토리지에 저장해야함.
-  // 그래서 이걸 우리가 받아와서 정록님과 제가 ui에 반영할 수 있을거 같습니다.
+  location.href = `detail.html?date=${selectedDate}`;
 });
-// 이전 달 버튼
+
+// 이전 다음
 $prev.addEventListener("click", () => {
   state.month--;
   if (state.month < 0) {
@@ -122,7 +126,7 @@ $prev.addEventListener("click", () => {
   }
   renderCalendar(state.year, state.month);
 });
-// 다음 달 버튼
+
 $next.addEventListener("click", () => {
   state.month++;
   if (state.month > 11) {
@@ -132,4 +136,5 @@ $next.addEventListener("click", () => {
   renderCalendar(state.year, state.month);
 });
 
+// 최초 실행
 renderCalendar(state.year, state.month);
