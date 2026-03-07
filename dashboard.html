@@ -10,63 +10,88 @@
 </head>
 
 <body>
-<section>
-    <div class="sidebar">
-        <div class="menu-name">
-            <h3>Menu</h3>
-        </div>
-        <div class="menu">
-        <div class="dashboard active"><a href="dashboard.html">Dashboard</a></div>
-        <div><a href="#">캘린더 보기</a></div>
-        <div><a href="#">예약 관리</a></div>
-        <div><a href="#">통계 로그</a></div>
-        <div><a href="#">⚙ 설정</a></div>
-        </div>
-        
-        </div>
-</section>
-
-<header>
-    <h2>상담 일정 관리 시스템</h2>
-    <div id="mode"></div>
-</header>
-<section class="main">
-
- 
-      
-    <!-- 오늘 예약 건수 -->
-    <section class="system"> 
-        <div class="card">
-          <h3>오늘 예약 </h3>
-          <div id="today-reservation">0</div>
-        </div>
-      <!-- 이번달 예약 총 건수 -->
-        <div class="card">
-          <h3>이번달 예약</h3>
-          <div id="monthCount">0</div>
-        </div>
-    <!-- 최근 예약  건수 -->
-           <div class="card">
-            <h3>최근 예약</h3>
-            <div id="recentCount">0</div>
-          </div>
-    
+  <header class="header">
+    <h2 class="logo">상담 예약 관리 시스템</h2>
+    <nav class="nav">
+      <a href="index.html">홈</a>
+      <a href="dashboard.html" class="active">대시보드</a>
+      <a href="calendar.html">예약 캘린더</a>
+      <a href="detail.html">예약 관리</a>
+    </nav>
+  </header>
   
-          
-      </section>
-</section>
-<section class="chart-section">
-
-    <div class="chart-card">
-    <h3>이번달 예약 통계</h3>
-    <canvas id="reservationChart"></canvas>
-    </div>
-
+  <main>
+    <!-- 카드 섹션 -->
+    <section class="card-section">
+      <div class="card">
+        <h3>오늘 예약</h3>
+        <div id="today-reservation">0 건</div>
+    
+      </div>
+  
+      <div class="card">
+        <h3>월간 예약</h3>
+        <div id="month-reservation">0 건</div>
+      </div>
+  
+      <div class="card">
+        <h3>최근 예약</h3>
+        <div id="recent-reservation">0 건</div>
+      </div>
+  
+      <div class="card">
+        <h3>총 예약</h3>
+        <div id="total-reservation">0 건</div>
+      </div>
     </section>
-    <script>
-
-
-        </script>
-
+  
+    
+     <div class="main-panels">
+  
+  <!-- 상담 유형 통계 그래프 -->
+     
+        <section class="canvas-area">
+          <h2>이번달 상담 유형 통계</h2>
+          <div class="stats-card">
+            <canvas id="reservationChart" width="400" height="200"></canvas>
+          </div>
+        </section>
+      
+        <!-- 오늘 일정 리스트 -->
+         <div class="schedule-lists">
+          <section class="today-schedule">
+            <h3>오늘 상담 일정</h3>
+            <ul id="todayScheduleList">
+             
+            </ul>
+          </section>
+        
+          <!-- 최근 예약 리스트 -->
+          <section class="recent-list">
+            <h3>최근 예약</h3>
+            <ul id="recentList">
+            </ul>
+          </section>
+         </div>
+       
+      
+     </div>
+  
+    
+   
+    <!-- 빠른 메뉴 -->
+    <section class="quick-menu">
+      <div class="quick-buttons">
+        <a href="reservation.html">예약 추가</a>
+        <a href="calendar.html">캘린더 보기</a>
+        <a href="detail.html">예약 관리</a>
+      </div>
+    </section>
+  
+  </main>
+  
+  
+  
+  <script type="module" src="js/index.js"></script>
 </body>
 </html>
