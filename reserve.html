@@ -1,15 +1,180 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>예약 페이지</title>
-    <link rel="stylesheet" href="./css/reserve.css" />
-    <script type="module" src="./js/reserve.js"></script>
-  </head>
-  <body>
-    <a href="./calendar.html">캘린더 페이지로</a>
-    <a href="./detail.html">디테일 페이지로</a>
-    <a href="./index.html">랜딩 페이지로</a>
-  </body>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>상담 예약</title>
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="./css/reserve.css">
+</head>
+<body>
+  <div id="app" style="min-height:100vh;display:flex;flex-direction:column;">
+
+    <!-- ===== PAGE 1: Intro ===== -->
+    <div id="pageIntro">
+      <header class="header">
+        <div class="header-left">
+          <a class="logo" href="./index.html">
+            <div class="logo-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            상담 예약
+          </a>
+          <nav class="header-nav">
+            <a href="./calendar.html">캘린더</a>
+            <span class="nav-separator">&gt;</span>
+            <a href="./detail.html">예약 현황</a>
+          </nav>
+        </div>
+      </header>
+
+      <main class="home-main">
+        <div class="home-form-container">
+          <h1 class="home-title">안녕하세요, 상담 예약 시스템입니다.</h1>
+          <p class="home-subtitle">예약자 정보를 알려주세요 ! :)</p>
+
+          <form class="home-form" id="homeForm">
+            <div class="form-group">
+              <label class="form-label">예약자 이름 <span class="required">*</span></label>
+              <div class="input-wrapper">
+                <input type="text" class="input" id="nameInput" placeholder="이름" required>
+                <button type="button" class="input-clear" id="nameClear">&times;</button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">전화번호 <span class="required">*</span></label>
+              <input type="tel" class="input" id="phoneInput" placeholder="010-0000-0000" required style="border-color: var(--primary);">
+            </div>
+
+            <button type="submit" class="btn btn-primary home-btn">새로운 예약 만들기</button>
+          </form>
+
+          <div style="text-align:center;margin-top:24px;">
+            <p style="font-size:12px;color:var(--gray-400);margin-bottom:8px;">다른 페이지로 이동하시겠어요?</p>
+            <a class="btn btn-outline home-btn" href="./calendar.html">캘린더 보기</a>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- ===== PAGE 2: Booking ===== -->
+    <div id="pageBooking" class="hidden">
+      <div class="booking-page">
+        <header class="booking-topbar">
+          <div class="menu-wrapper">
+            <button class="menu-btn" aria-label="메뉴" onclick="toggleMenu()">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="4" y1="7" x2="20" y2="7"></line>
+                <line x1="4" y1="12" x2="20" y2="12"></line>
+                <line x1="4" y1="17" x2="20" y2="17"></line>
+              </svg>
+            </button>
+            <div class="menu-dropdown hidden" id="menuDropdown">
+              <button class="menu-item" onclick="closeMenu(); showPage('intro');">홈화면으로</button>
+              <a class="menu-item" href="./calendar.html">캘린더에서 보기</a>
+              <a class="menu-item" href="./detail.html">예약 현황 상세</a>
+            </div>
+          </div>
+        </header>
+
+        <main class="booking-main">
+          <div class="booking-card">
+            <!-- Left Column -->
+            <div class="booking-left" id="bookingLeft">
+              <button class="back-btn hidden" id="backBtn" onclick="goToSelect()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4b5563" stroke-width="2"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+              </button>
+              <div class="booking-label">예약자 이름</div>
+              <div class="booking-name" id="displayName"></div>
+              <div class="booking-info">
+                <div class="booking-info-row">
+                  <span class="booking-info-label">예약번호</span>
+                  <span class="booking-info-value" id="displayPhone">없음</span>
+                </div>
+                <div class="selected-datetime hidden" id="selectedDatetime">
+                  <svg class="dt-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/></svg>
+                  <div>
+                    <div id="dtDate"></div>
+                    <div class="dt-time" id="dtTime"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step: Select Date & Time -->
+            <div id="stepSelect" style="display:contents;">
+              <!-- Middle Column: Calendar -->
+              <div class="booking-middle">
+                <h2>날짜를 선택해 주세요.</h2>
+                <div class="calendar" id="calendar"></div>
+              </div>
+
+              <!-- Right Column: Time Slots -->
+              <div class="booking-right">
+                <div class="booking-right-header">
+                  <h2>시간 선택</h2>
+                  <p id="timeSlotDate">날짜를 선택하세요</p>
+                </div>
+                <div class="time-slots" id="timeSlots"></div>
+              </div>
+            </div>
+
+            <!-- Step: Form -->
+            <div class="booking-form-area hidden" id="stepForm">
+              <h2>상담 예약 정보 입력</h2>
+              <form class="booking-form" id="bookingForm">
+                <div class="form-group">
+                  <label class="form-label">상담 유형 <span class="required">*</span></label>
+                  <div class="custom-select" id="customSelect">
+                    <button type="button" class="custom-select-trigger" id="selectTrigger">
+                      <span id="selectLabel">상담 유형을 선택해주세요</span>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    </button>
+                    <ul class="custom-select-options hidden" id="selectOptions">
+                      <li data-value="진로 상담">진로 상담</li>
+                      <li data-value="심리 상담">심리 상담</li>
+                      <li data-value="학습 상담">학습 상담</li>
+                      <li data-value="기타 상담">기타 상담</li>
+                    </ul>
+                    <input type="hidden" id="typeSelect" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">메모</label>
+                  <textarea class="input" id="memoInput" placeholder="요청사항이 있으시면 알려주세요 ! :)" rows="4" style="resize:vertical;padding-top:12px;"></textarea>
+                </div>
+                <div style="padding-top:24px;">
+                  <button type="submit" class="btn btn-primary booking-submit">예약하기</button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Step: Success -->
+            <div class="booking-success hidden" id="stepSuccess">
+              <div class="success-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              </div>
+              <h2 class="success-title">예약이 등록되었습니다!</h2>
+              <p class="success-desc">상담 예약이 정상적으로 저장되었습니다.<br>캘린더에서 등록된 일정을 확인하실 수 있습니다.</p>
+              <a class="btn btn-outline" style="height:44px;padding:0 32px;min-width:200px;text-align:center;" href="./calendar.html">캘린더에서 확인하기</a>
+              <a class="btn btn-outline" style="height:44px;padding:0 32px;min-width:200px;text-align:center;margin-top:12px;" href="./detail.html">예약 상세 보기</a>
+              <a href="#" style="display:inline-block;margin-top:12px;color:var(--primary);font-size:14px;text-decoration:underline;cursor:pointer;" onclick="showPage('intro')">새 예약 등록하기</a>
+            </div>
+          </div>
+
+          <div class="booking-help">
+            <span class="q-mark">?</span>
+            원하는 예약시간이 없으신가요?
+          </div>
+
+        </main>
+      </div>
+    </div>
+
+  </div>
+
+  <script type="module" src="./js/reserve.js"></script>
+</body>
 </html>
