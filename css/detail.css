@@ -1,3 +1,258 @@
+:root {
+  --primary: #3b82f6;
+  --primary-soft: #eff6ff;
+  --text-main: #1f2937;
+  --text-sub: #6b7280;
+  --line: #e5e7eb;
+  --bg: #f8fafc;
+  --white: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
-  background-color: lightblue;
+  margin: 0;
+  font-family: "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  background: linear-gradient(180deg, #f8fbff 0%, #f5f7fb 100%);
+  color: var(--text-main);
+}
+
+.page-wrap {
+  min-height: 100vh;
+}
+
+.top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.page-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--primary);
+  background-color: var(--primary-soft);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-weight: 600;
+}
+
+.page-title {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.page-desc {
+  color: var(--text-sub);
+  font-size: 15px;
+}
+
+.back-btn {
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-weight: 600;
+}
+
+.filter-card,
+.schedule-item {
+  border-radius: 20px;
+  background-color: var(--white);
+}
+
+.filter-label {
+  font-size: 14px;
+  font-weight: 700;
+  color: #475569;
+}
+
+.search-group .input-group-text {
+  background-color: #fff;
+  border-right: 0;
+}
+
+.search-group .form-control {
+  border-left: 0;
+}
+
+.search-group .form-control:focus {
+  box-shadow: none;
+}
+
+.count-box {
+  height: 38px;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  background: #f8fafc;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  font-weight: 700;
+  color: #334155;
+}
+
+.schedule-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.schedule-item {
+  border: 1px solid #edf2f7;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.schedule-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.08);
+  border-color: #dbeafe;
+}
+
+.schedule-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px 22px;
+}
+
+.schedule-left {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-width: 0;
+}
+
+.time-badge {
+  min-width: 120px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.schedule-main {
+  min-width: 0;
+}
+
+.schedule-title {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.schedule-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 12px;
+  color: var(--text-sub);
+  font-size: 14px;
+}
+
+.schedule-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.schedule-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.type-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #f1f5f9;
+  color: #334155;
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.edit-hint {
+  color: #94a3b8;
+  font-size: 18px;
+}
+
+.empty-box {
+  background: #fff;
+  border: 1px dashed #dbe3ee;
+  border-radius: 20px;
+  padding: 60px 20px;
+  text-align: center;
+  color: #64748b;
+}
+
+.empty-box i {
+  font-size: 36px;
+  margin-bottom: 14px;
+  color: #94a3b8;
+}
+
+.modal-content {
+  border-radius: 20px;
+}
+
+.modal-header,
+.modal-footer {
+  border-color: #f1f5f9;
+}
+
+.modal-title {
+  font-weight: 800;
+}
+
+.form-control,
+.form-select {
+  border-radius: 12px;
+  min-height: 46px;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #93c5fd;
+  box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.12);
+}
+
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 26px;
+  }
+
+  .schedule-inner {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .schedule-left {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .time-badge {
+    min-width: auto;
+    width: 100%;
+  }
+
+  .schedule-right {
+    justify-content: space-between;
+  }
 }

@@ -8,8 +8,25 @@
     <script type="module" src="./js/calendar.js"></script>
   </head>
   <body>
-    <a href="./detail.html">디테일 페이지로</a>
-    <a href="./reserve.html">예약 페이지로</a>
-    <a href="./index.html">랜딩 페이지로</a>
+    <div id="wrap">
+      <div class="container">
+        <header id="header">
+          <div class="year-container">
+            <h1 id="year"></h1>
+          </div>
+          <div class="month-container">
+            <h2 id="month"></h2>
+          </div>
+        </header>
+        <section id="calendar"></section>
+        <div class="month-control">
+          <button id="prev">◀ 이전</button>
+          <button id="next">다음 ▶</button>
+        </div>
+      </div>
+      <a href="./detail.html">디테일 페이지로</a>
+      <a href="./reserve.html">예약 페이지로</a>
+      <a href="./index.html">랜딩 페이지로</a>
+    </div>
   </body>
 </html>
