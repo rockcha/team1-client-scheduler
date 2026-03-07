@@ -13,7 +13,7 @@ const LS_KEY = "reservations";
 /* =========================
 예약 전체 가져오기
 ========================= */
-function getReservations() {
+export function getReservations() {
   const data = localStorage.getItem(LS_KEY);
   return data ? JSON.parse(data) : [];
 }
