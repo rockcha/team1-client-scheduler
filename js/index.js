@@ -36,12 +36,13 @@ monthReservationContent.textContent = `${monthReservation.length} 건`
 recentReservationContent.textContent = `${recentReservation.length} 건`
 totalReservationContent.textContent = `${totalReservation} 건`
 
+
 //오늘 예약자 리스트
 
 const todayList = document.getElementById('todayScheduleList')
 todayList.innerHTML = "";
 
-if(todayList.length === 0){
+if(todayReservation.length === 0){
     const li = document.createElement("li");
     li.textContent = "오늘 일정이 없습니다."
     todayList.appendChild(li);
@@ -68,8 +69,16 @@ recentReservation.forEach(r => {
 
 //통계
 
-const typeCount = { "심리 상담":0, "취업 상담":0, "학습 상담":0 };
-reservations.forEach(r => { if(typeCount[r.type] !== undefined) typeCount[r.type]++; });
+const typeCount = { 
+  "심리 상담":0, 
+  "진로 상담":0, 
+  "학습 상담":0, 
+  "기타 상담":0
+};
+
+reservations.forEach(r => { 
+  if(typeCount[r.title] !== undefined) typeCount[r.title]++; 
+});
 
 const ctx = document.getElementById("reservationChart");
 if(ctx){
@@ -80,7 +89,7 @@ if(ctx){
       datasets: [{
         label: "상담 유형별 예약 수",
         data: Object.values(typeCount),
-        backgroundColor: ["#6C8EF5","#F4A261","#2A9D8F"]
+        backgroundColor: ["#6C8EF5","#F4A261","#2A9D8F", "#E76F51"]
       }]
     },
     options: { responsive:true, plugins:{ legend:{ display:false } } }
