@@ -1,5 +1,10 @@
 import { getReservations, updateReservation } from "./storage.js";
 
+const $selectedDateTitle = document.getElementById("selected-date-title");
+const $selectedDateDesc = document.getElementById("selected-date-desc");
+const $selectedDateCount = document.getElementById("selected-date-count");
+const $selectedDateList = document.getElementById("selected-date-list");
+
 const $scheduleList = document.getElementById("schedule-list");
 const $searchInput = document.getElementById("search-input");
 const $sortSelect = document.getElementById("sort-select");
@@ -18,6 +23,7 @@ const reservationModal = new bootstrap.Modal(modalElement);
 
 let reservations = [];
 let filteredReservations = [];
+let selectedDate = "";
 
 /* =========================
 초기 실행
@@ -26,6 +32,11 @@ init();
 
 function init() {
   reservations = getReservations();
+  selectedDate = getSelectedDateFromQuery();
+
+  renderSelectedDateHeader();
+  renderSelectedDateSection();
+
   applyFiltersAndRender();
   bindEvents();
 }
@@ -37,7 +48,7 @@ function bindEvents() {
   $searchInput.addEventListener("input", applyFiltersAndRender);
   $sortSelect.addEventListener("change", applyFiltersAndRender);
 
-  $scheduleList.addEventListener("click", (e) => {
+  document.addEventListener("click", (e) => {
     const item = e.target.closest(".schedule-item");
     if (!item) return;
 
@@ -72,8 +83,68 @@ function bindEvents() {
     updateReservation(id, updatedData);
 
     reservations = getReservations();
+    selectedDate = getSelectedDateFromQuery();
+
+    renderSelectedDateHeader();
+    renderSelectedDateSection();
     applyFiltersAndRender();
+
     reservationModal.hide();
+  });
+}
+
+/* =========================
+쿼리스트링 date 가져오기
+예: detail.html?date=2026-03-10
+========================= */
+function getSelectedDateFromQuery() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("date") || "";
+}
+
+/* =========================
+선택 날짜 헤더 렌더
+========================= */
+function renderSelectedDateHeader() {
+  const dateReservations = reservations.filter(
+    (item) => item.date === selectedDate,
+  );
+
+  if (!selectedDate) {
+    $selectedDateTitle.textContent = "선택된 날짜가 없습니다";
+    $selectedDateDesc.textContent =
+      "URL에 ?date=2026-03-10 형태로 전달하면 해당 날짜 예약을 볼 수 있어요.";
+    $selectedDateCount.textContent = "0건";
+    return;
+  }
+
+  $selectedDateTitle.textContent = `${selectedDate}`;
+
+  $selectedDateCount.textContent = `${dateReservations.length}건`;
+}
+
+/* =========================
+해당 날짜 섹션 렌더
+========================= */
+function renderSelectedDateSection() {
+  if (!selectedDate) {
+    $selectedDateList.innerHTML = `
+      <div class="empty-box">
+        <i class="fa-regular fa-calendar-xmark"></i>
+        <h3 class="mb-2">date 쿼리스트링이 없습니다</h3>
+        <p class="mb-0">예: detail.html?date=2026-03-10</p>
+      </div>
+    `;
+    return;
+  }
+
+  const dateReservations = [...reservations]
+    .filter((item) => item.date === selectedDate)
+    .sort((a, b) => toSortableValue(a) - toSortableValue(b));
+
+  renderList($selectedDateList, dateReservations, {
+    emptyTitle: "해당 날짜 예약이 없습니다",
+    emptyDesc: "선택한 날짜와 일치하는 예약을 찾지 못했어요.",
   });
 }
 
@@ -88,7 +159,11 @@ function applyFiltersAndRender() {
     .filter((item) => matchesKeyword(item, keyword))
     .sort((a, b) => sortReservations(a, b, sortValue));
 
-  renderList(filteredReservations);
+  renderList($scheduleList, filteredReservations, {
+    emptyTitle: "예약 내역이 없습니다",
+    emptyDesc: "검색 조건에 맞는 예약을 찾지 못했어요.",
+  });
+
   renderCount(filteredReservations.length);
 }
 
@@ -140,21 +215,26 @@ function extractStartTime(timeRange = "") {
 }
 
 /* =========================
-리스트 렌더
+리스트 렌더 공통
 ========================= */
-function renderList(list) {
+function renderList(targetElement, list, emptyOption = {}) {
+  const {
+    emptyTitle = "데이터가 없습니다",
+    emptyDesc = "표시할 항목이 없습니다.",
+  } = emptyOption;
+
   if (!list.length) {
-    $scheduleList.innerHTML = `
+    targetElement.innerHTML = `
       <div class="empty-box">
         <i class="fa-regular fa-calendar-xmark"></i>
-        <h3 class="mb-2">예약 내역이 없습니다</h3>
-        <p class="mb-0">검색 조건에 맞는 예약을 찾지 못했어요.</p>
+        <h3 class="mb-2">${escapeHtml(emptyTitle)}</h3>
+        <p class="mb-0">${escapeHtml(emptyDesc)}</p>
       </div>
     `;
     return;
   }
 
-  $scheduleList.innerHTML = list
+  targetElement.innerHTML = list
     .map(
       (item) => `
         <article class="schedule-item" data-id="${item.id}">
