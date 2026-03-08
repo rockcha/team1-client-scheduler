@@ -28,11 +28,11 @@
           <div>
             <p class="page-badge mb-2">
               <i class="fa-regular fa-calendar-days"></i>
-              예약 내역
+              예약 상세
             </p>
-            <h1 class="page-title mb-1">전체 상담 예약 목록</h1>
+            <h1 class="page-title mb-1">예약 내역 확인</h1>
             <p class="page-desc mb-0">
-              예약 내역을 확인하고, 클릭해서 수정할 수 있습니다.
+              선택한 날짜 예약과 전체 예약 목록을 확인할 수 있습니다.
             </p>
           </div>
 
@@ -42,7 +42,46 @@
           </a>
         </div>
 
-        <!-- 필터 카드 -->
+        <!-- 선택 날짜 요약 -->
+        <section class="date-focus-card card border-0 shadow-sm mb-4">
+          <div class="card-body">
+            <div class="date-focus-header">
+              <div>
+                <h2 class="focus-date-title mb-1" id="selected-date-title">
+                  날짜를 불러오는 중...
+                </h2>
+              </div>
+              <div class="focus-count-box" id="selected-date-count">0건</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 해당 날짜 예약 -->
+        <section class="mb-5">
+          <div class="section-heading mb-3">
+            <h2 class="section-title mb-1">
+              <i class="fa-regular fa-star"></i>
+              선택한 날짜
+            </h2>
+            <p class="section-desc mb-0">
+              URL의 date 값과 일치하는 예약만 보여줍니다.
+            </p>
+          </div>
+
+          <section id="selected-date-list" class="schedule-list"></section>
+        </section>
+
+        <!-- 전체 목록 필터 -->
+        <div class="section-heading mb-3">
+          <h2 class="section-title mb-1">
+            <i class="fa-regular fa-rectangle-list"></i>
+            전체 예약 내역
+          </h2>
+          <p class="section-desc mb-0">
+            검색과 정렬을 통해 전체 예약을 확인할 수 있습니다.
+          </p>
+        </div>
+
         <div class="filter-card card border-0 shadow-sm mb-4">
           <div class="card-body">
             <div class="row g-3 align-items-center">
@@ -81,7 +120,7 @@
           </div>
         </div>
 
-        <!-- 예약 리스트 -->
+        <!-- 전체 예약 리스트 -->
         <section id="schedule-list" class="schedule-list"></section>
       </div>
     </div>

@@ -61,10 +61,80 @@ body {
   font-weight: 600;
 }
 
+.date-focus-card,
 .filter-card,
 .schedule-item {
   border-radius: 20px;
   background-color: var(--white);
+}
+
+.date-focus-card {
+  border: 1px solid #dbeafe;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+}
+
+.date-focus-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.focus-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--primary);
+  background: var(--primary-soft);
+  border-radius: 999px;
+  padding: 8px 12px;
+}
+
+.focus-date-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.focus-date-desc {
+  color: var(--text-sub);
+  font-size: 14px;
+}
+
+.focus-count-box {
+  min-width: 96px;
+  text-align: center;
+  padding: 14px 18px;
+  border-radius: 16px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.section-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.section-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.section-title i {
+  color: var(--primary);
+  margin-right: 6px;
+}
+
+.section-desc {
+  color: var(--text-sub);
+  font-size: 14px;
 }
 
 .filter-label {
@@ -237,6 +307,11 @@ body {
     font-size: 26px;
   }
 
+  .focus-date-title {
+    font-size: 22px;
+  }
+
+  .date-focus-header,
   .schedule-inner {
     flex-direction: column;
     align-items: stretch;
